@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <title>Chat App</title>
     <style>
+        body{
+            background-color: #9e9e9e;
+        }
         .groups,.messages{
             height: calc(90vh - 10px);
             margin:0px;
@@ -25,7 +28,7 @@
             font-size: 22px;
             background-color:rgb(227, 235, 236) !important;
         }
-        .messages .thread {
+     .thread {
         
             border-radius: 20px;
             background-color: rgb(121, 189, 121);
@@ -70,11 +73,11 @@
             <a href="/?username={{user.username}}&room={{i.id}}" class="w3-block w3-card w3-white w3-padding w3-border-bottom" >{{i.name}}</a>
             {% endfor %}
         </div>
-        <div class="messages w3-pink w3-padding " style="width: 60%;position: relative;">
+        <div class="messages w3-pink w3-padding " id="msg" style="width: 60%;position: relative;height: calc(80vh + 20px);" >
             {% for i in messages %}
             {% if i.reply %}
             <div class="thread">
-                <span class="name">{{i.sender.first_name}} {{i.sender.last_name}}</span> 
+                <span class="name">{{i.sender.first_name}} {{i.sender.last_name}} <span class="w3-right" style="cursor: pointer; color:#333;font-size: 16px;" onclick="addReply('{{i.sender.first_name}}','{{i.sender.last_name}}','{{i.id}}','{{i.text}}')">⬇ reply</span></span> 
                 <span ><div class="reply">
                     <span class="name">{{i.reply.sender.first_name}} {{i.reply.sender.last_name}}</span> 
                     <span class="text">{{i.reply.text}}</span>
@@ -83,17 +86,87 @@
             </div>
             {% else %}
             <div class="thread">
-                <span class="name">{{i.sender.first_name}} {{i.sender.last_name}}</span> 
+                <span class="name">{{i.sender.first_name}} {{i.sender.last_name}}  <span class="w3-right w3-color-black" style="cursor: pointer; color:#333;font-size: 16px;" onclick="addReply('{{i.sender.first_name}}','{{i.sender.last_name}}','{{i.id}}','{{i.text}}')">⬇ reply</span></span> 
                 <span class="text">{{i.text}}</span>
             </div>
-            
             {% endif %}
             {% endfor %}
         </div>
     </div>
-
+    <div class="sendbox" style="display: flex;width:60%;position: fixed;bottom:0px;right:0px;">
+        <input type="text" class="w3-input" id="msgbox" placeholder="Enter your message..." style="width: 80%;">
+        <button class="w3-btn w3-gray w3-hover-blue" style="width: 20%;" onclick="sendMessage()" >Send</button>
+    </div>
+    <div style="position: fixed;bottom:28px;left:40%;width:60%;background-color: #fff;" id="bottombox">
+       </div>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+autoScroll = ()=>{
+    let objDiv = document.getElementById("msg");
+    objDiv.scrollTop = objDiv.scrollHeight;
+}
 
+var reply_arr = [];
+
+const addReply = (first_name,last_name,id,text)=>{
+    reply_arr = [];
+    reply_arr.push(first_name);
+    reply_arr.push(last_name);
+    reply_arr.push(id);
+    reply_arr.push(text);
+    replyobj = `<div class="thread"><span class="name">${first_name} ${last_name} <span class="w3-right" style="cursor:pointer;font-size:16px" onclick="clearReply()">&times</span></span> <span ><span class="text">${text}</span></div>`;
+    $("#bottombox").html(replyobj);
+    console.log(reply_arr);
+}
+
+const clearReply = ()=>{
+    reply_arr = [];
+    $("#bottombox").html('');
+
+}
+window.addEventListener("load",()=>{
+    autoScroll();
+});
+
+
+
+send = (message) =>{
+    if(reply_arr.length==0){
+        $.post("/addmessage",{
+        "message":message,
+        "user":"{{user.id}}",
+        "room":"{{current.id}}",
+        "csrfmiddlewaretoken":"{{csrf_token}}"
+    },(data,status)=>{
+        console.log(status);
+    });
+    }
+    else{
+    $.post("/addmessage",{
+        "message":message,
+        "user":"{{user.id}}",
+        "room":"{{current.id}}",
+        "reply":reply_arr[2],
+        "csrfmiddlewaretoken":"{{csrf_token}}"
+    },(data,status)=>{
+        console.log(status);
+
+    });
+
+}
+}
+
+sendMessage = () =>{
+    let box = document.getElementById("msgbox");
+    let message = box.value.trim();
+    if(message==""){
+        return;
+    }
+    else{
+        send(message);
+        location.reload();
+    }
+}
 </script>
 </html>
