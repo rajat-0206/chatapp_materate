@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <title>Chat App</title>
+    <style>
+        .groups,.messages{
+            height: calc(90vh - 10px);
+            margin:0px;
+            overflow-y: auto;
+        }
+        .groups a {
+            height:50px;
+            font-size: 20px;
+            font-weight: bolder;
+            cursor: pointer;
+            transition: 0.3s ease;
+            text-decoration: none;
+        }
+
+        .groups a:hover {
+            font-size: 22px;
+            background-color:rgb(227, 235, 236) !important;
+        }
+        .messages .thread {
+        
+            border-radius: 20px;
+            background-color: rgb(121, 189, 121);
+            margin:10px;
+            margin-top: 20px;
+            padding:5px;   
+            padding-left: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        .name {
+            color:rgb(68, 65, 65);
+            background-color: #fff;
+            /* transform:translateY(-5px); */
+            border-radius: 20px;
+            padding-left: 20px;
+        }
+        .text{
+            color:#000;
+            font-size: 16px;
+            margin:5px;
+        }
+
+        .reply {
+            display: flex;
+            margin-top:5px;
+            border-left:3px solid greenyellow;
+            flex-direction: column;
+            background-color: rgb(109, 224, 171);
+            border-radius: 20px;
+            padding:5px;
+            opacity: 0.6;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="w3-card w3-block w3-blue w3-padding" style="margin: 0px;">Current User : {{user.first_name}} {{user.last_name}}</h1>
+    <div class="main" style="display: flex;width: 100%;">
+        <div class="groups w3-gray" style="width:40%;color:#fff;display: flex;flex-direction: column;">
+            {% for i in rooms %}
+            <a href="/?username={{user.username}}&room={{i.id}}" class="w3-block w3-card w3-white w3-padding w3-border-bottom" >{{i.name}}</a>
+            {% endfor %}
+        </div>
+        <div class="messages w3-pink w3-padding " style="width: 60%;position: relative;">
+            {% for i in messages %}
+            {% if i.reply %}
+            <div class="thread">
+                <span class="name">{{i.sender.first_name}} {{i.sender.last_name}}</span> 
+                <span ><div class="reply">
+                    <span class="name">{{i.reply.sender.first_name}} {{i.reply.sender.last_name}}</span> 
+                    <span class="text">{{i.reply.text}}</span>
+                </div></span>   
+                    <span class="text">{{i.text}}</span>
+            </div>
+            {% else %}
+            <div class="thread">
+                <span class="name">{{i.sender.first_name}} {{i.sender.last_name}}</span> 
+                <span class="text">{{i.text}}</span>
+            </div>
+            
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+</body>
+<script>
+
+</script>
+</html>
