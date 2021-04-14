@@ -19,15 +19,20 @@
             height:50px;
             font-size: 20px;
             font-weight: bolder;
-            cursor: pointer;
             transition: 0.3s ease;
             text-decoration: none;
         }
-
-        .groups a:hover {
-            font-size: 22px;
+        .groups .card{
+            transition: 0.3s ease;
+            cursor: pointer;
+        }
+        .groups .card:hover {
             background-color:rgb(227, 235, 236) !important;
         }
+        .groups .card:hover a {
+            font-size: 22px !important;
+        }
+        
      .thread {
         
             border-radius: 20px;
@@ -73,7 +78,10 @@
     <div class="main" style="display: flex;width: 100%;">
         <div class="groups w3-gray" style="width:40%;color:#fff;display: flex;flex-direction: column;">
             {% for i in rooms %}
-            <a href="/?room={{i.id}}" class="w3-block w3-card w3-white w3-padding w3-border-bottom" >{{i.name}}</a>
+            <div onclick="open_url('/?room={{i.id}}')" class="card w3-block w3-card w3-white w3-padding w3-border-bottom">
+            <a >{{i.name}}</a>
+            <p>{{i.get_members}}</p>
+            </div>
             {% endfor %}
         </div>
         <div class="messages w3-pink w3-padding " id="msg" style="width: 60%;position: relative;height: calc(80vh + 20px);" >
@@ -105,6 +113,10 @@
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+    open_url = (link)=>{
+    window.location.href = link;
+}
+
 autoScroll = ()=>{
     let objDiv = document.getElementById("msg");
     objDiv.scrollTop = objDiv.scrollHeight;
@@ -171,5 +183,7 @@ sendMessage = () =>{
         location.reload();
     }
 }
+
+
 </script>
 </html>

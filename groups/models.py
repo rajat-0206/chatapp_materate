@@ -8,6 +8,13 @@ class room(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def get_members(self):
+        members = self.members.all()
+        result = []
+        for i in members:
+            result.append(i.first_name+" "+i.last_name)
+        return ", ".join(i for i in result)
 
 class message(models.Model):
      id = models.AutoField(primary_key=True,editable=False,null=False)
