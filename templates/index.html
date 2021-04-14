@@ -66,11 +66,14 @@
     </style>
 </head>
 <body>
-    <h1 class="w3-card w3-block w3-blue w3-padding" style="margin: 0px;">Current User : {{user.first_name}} {{user.last_name}}</h1>
+    <div class="top w3-card w3-block w3-blue w3-padding" style="margin: 0px; display: flex;justify-content: space-between;">
+    <h1 style="margin: 0px;">Current User : {{user.first_name}} {{user.last_name}}</h1>
+    <a href="/logout" class="w3-right" style="cursor: pointer;">logout</a>
+    </div>
     <div class="main" style="display: flex;width: 100%;">
         <div class="groups w3-gray" style="width:40%;color:#fff;display: flex;flex-direction: column;">
             {% for i in rooms %}
-            <a href="/?username={{user.username}}&room={{i.id}}" class="w3-block w3-card w3-white w3-padding w3-border-bottom" >{{i.name}}</a>
+            <a href="/?room={{i.id}}" class="w3-block w3-card w3-white w3-padding w3-border-bottom" >{{i.name}}</a>
             {% endfor %}
         </div>
         <div class="messages w3-pink w3-padding " id="msg" style="width: 60%;position: relative;height: calc(80vh + 20px);" >
