@@ -10,10 +10,8 @@ We have seven users with there own username and password. For testing purpose yo
 <li> Username - rajat
 <li> Password - mapple1205
 </ul>
-Rest of the usernames are - 
+Some more usernames are - 
 <ul>
-<li> isha
-<li> anushka
 <li> ranjan
 <li> arora
 <li> agarwal
