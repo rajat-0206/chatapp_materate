@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
 
 class room(models.Model):
     id = models.AutoField(primary_key=True,editable=False,null=False)
@@ -28,3 +29,10 @@ class message(models.Model):
          return self.text +" by "+self.sender.first_name+" in room "+self.group.name
 
     
+def add_to_group(sender,instance,created,**kwargs):
+    if(created==True):
+        groups = room.objects.all()
+        for i in groups:
+            i.members.add(instance)
+
+post_save.connect(add_to_group,sender=User)
