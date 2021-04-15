@@ -43,7 +43,7 @@ python manage.py runserver
 
 <ol>
 <li> After running the project visit <strong>127.0.0.1:8000</strong>
-<li> Use the credential with username <strong> rajat <strong> to login.
+<li> Use the credential with username <strong> rajat </strong> to login.
 <li> Chatting home page will be displayed. You can send message to any group and can reply to any messages as well.
 <li> To login into another account, first logout and then use any of the registed user to login again.
 </ol>
